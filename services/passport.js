@@ -7,6 +7,7 @@ const {
 } = require("../config/keys")
 const mongoose = require("mongoose")
 
+// THIS line creates the instance
 const User = mongoose.model("users")
 
 const whiteListedEmails = ["shawnballay1@gmail.com"]
