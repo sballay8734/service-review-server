@@ -20,13 +20,17 @@ passport.use(
       callbackURL: "/auth/google/callback"
     },
     (accessToken, refreshToken, profile, done) => {
-      const userEmail = profile.emails[0].value
+      const userEmails = profile.emails.map((emailObj) => emailObj.value)
+      const isWhiteListed = userEmails.some((email) =>
+        whiteListedEmails.includes(email)
+      )
 
-      if (whiteListedEmails.includes(userEmail)) {
+      if (isWhiteListed) {
         // below is not sent and persisted in database (just exists in JS world)
         // new User({ googleID: profile.id })
         // to get it to persist to DB we need to call function .save()
-        new User({ googleID: profile.id }).save()
+        // new User({ googleID: profile.id }).save()
+        console.log(profile)
       } else {
         return done(null, false, {
           message: "Access Denied: This email has not been whitelisted"
